@@ -1,6 +1,10 @@
 import {StyleSheet, ScrollView,Image} from 'react-native'
 import { PaperProvider, Text, Button } from "react-native-paper";
-export default function Home(){
+import {createStackNavigator} from '@react-navigation/stack'
+import { NavigationContainer } from '@react-navigation/native';
+
+export default function Home({navigation}){
+const Stack = createStackNavigator();
     return (
       <PaperProvider>
         <ScrollView>
@@ -11,7 +15,7 @@ export default function Home(){
           <Button
             icon="airballoon-outline"
             mode="contained"
-            onPress={() => console.log("Pressed")}
+            onPress={() => navigation.navigate("UploadPhoto")}
             style={styles.homebutton}
           >
             Start Here
