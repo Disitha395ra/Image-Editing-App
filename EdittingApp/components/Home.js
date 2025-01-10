@@ -1,5 +1,5 @@
 import {StyleSheet, ScrollView,Image} from 'react-native'
-import { PaperProvider } from 'react-native-paper'
+import { PaperProvider,Text } from 'react-native-paper'
 export default function Home(){
     return (
         <PaperProvider>
@@ -7,7 +7,7 @@ export default function Home(){
                 <Image
                 source={require('../assets/banner.jpg')}
                 style={styles.banner}
-                ></Image>
+                />
             </ScrollView>
         </PaperProvider>
     )
@@ -15,7 +15,7 @@ export default function Home(){
 
 const styles = StyleSheet.create({
   banner:{
-    width: '100%',
-    height: 200
+    width: '600',
+    height: 900,
   }
 });
