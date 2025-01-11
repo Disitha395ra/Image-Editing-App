@@ -1,24 +1,50 @@
 import React from "react";
 import { StyleSheet, View, Image } from "react-native";
 import { PaperProvider, Text, IconButton, MD3Colors } from "react-native-paper";
+import axios from "axios";
 
 export default function Tint({ route }) {
-    const { photo } = route.params;
-    const handlered = () => {
-        alert("Red Tint");
+  const { photo } = route.params;
+
+  const applyTint = async (tintType) => {
+    try {
+      const formData = new FormData();
+      formData.append("photo", {
+        uri: photo,
+        name: "image.jpg",
+        type: "image/jpeg",
+      });
+      formData.append("tint", tintType);
+
+      const response = await axios.post(
+        "http://your-backend-url/apply-tint",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        const tintedImageUrl = response.data.tintedImageUrl; // Backend returns the tinted image URL
+        alert(`${tintType} Tint Applied!`);
+        console.log("Tinted Image URL:", tintedImageUrl);
+      } else {
+        alert("Failed to apply tint.");
+      }
+    } catch (error) {
+      console.error("Error applying tint:", error);
+      alert("Error applying tint.");
     }
-    const handlegreen = () => {
-        alert("Green Tint");
-    }
-    const handleblue = () => {
-        alert("Blue Tint");
-    }
-    const handleyellow = () => {
-        alert("Yellow Tint");
-    }
-    const handlegray = () => {
-        alert("Gray Tint");
-    }
+  };
+
+  const handlered = () => applyTint("red");
+  const handlegreen = () => applyTint("green");
+  const handleblue = () => applyTint("blue");
+  const handleyellow = () => applyTint("yellow");
+  const handlegray = () => applyTint("gray");
+
   return (
     <PaperProvider>
       <View style={styles.container}>
@@ -95,15 +121,15 @@ const styles = StyleSheet.create({
     height: 300,
     borderRadius: 10,
   },
-  buttontext:{
+  buttontext: {
     textAlign: "center",
     fontSize: 8,
     marginTop: 5,
     color: "black",
   },
-  buttoncomponent:{
+  buttoncomponent: {
     margin: 10,
     alignItems: "center",
     borderBlockColor: "black",
-  }
+  },
 });
