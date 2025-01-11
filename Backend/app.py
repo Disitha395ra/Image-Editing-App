@@ -1,9 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import os
 from werkzeug.utils import secure_filename
 import matlab.engine
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 # Configurations
 UPLOAD_FOLDER = "uploads"
@@ -20,10 +22,12 @@ os.makedirs(TINTED_FOLDER, exist_ok=True)
 eng = matlab.engine.start_matlab()
 
 def allowed_file(filename):
+    """Check if the file has a valid extension."""
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/apply-tint', methods=['POST'])
 def apply_tint():
+    """Handle the tint application request."""
     if 'photo' not in request.files or 'tint' not in request.form:
         return jsonify({"success": False, "message": "Missing photo or tint type."}), 400
 
@@ -41,32 +45,39 @@ def apply_tint():
             tinted_path = os.path.join(app.config['TINTED_FOLDER'], tinted_filename)
 
             # Call MATLAB function
-            if tint_type == "red":
-                eng.applyRedTint(file_path, tinted_path, nargout=0)
-            elif tint_type == "green":
-                eng.applyGreenTint(file_path, tinted_path, nargout=0)
-            elif tint_type == "blue":
-                eng.applyBlueTint(file_path, tinted_path, nargout=0)
-            elif tint_type == "yellow":
-                eng.applyYellowTint(file_path, tinted_path, nargout=0)
-            elif tint_type == "gray":
-                eng.applyGrayTint(file_path, tinted_path, nargout=0)
+            tint_functions = {
+                "red": "applyRedTint",
+                "green": "applyGreenTint",
+                "blue": "applyBlueTint",
+                "yellow": "applyYellowTint",
+                "gray": "applyGrayTint",
+            }
+
+            if tint_type in tint_functions:
+                matlab_func = getattr(eng, tint_functions[tint_type])
+                matlab_func(file_path, tinted_path, nargout=0)
             else:
                 return jsonify({"success": False, "message": "Invalid tint type."}), 400
 
             return jsonify({
                 "success": True,
                 "message": f"{tint_type} tint applied successfully.",
-                "tintedImageUrl": f"/{tinted_path}"
+                "tintedImageUrl": f"/tinted_images/{tinted_filename}"
             }), 200
+        except matlab.engine.MatlabExecutionError as e:
+            return jsonify({"success": False, "message": f"MATLAB Error: {str(e)}"}), 500
         except Exception as e:
-            return jsonify({"success": False, "message": str(e)}), 500
+            return jsonify({"success": False, "message": f"Error: {str(e)}"}), 500
     else:
         return jsonify({"success": False, "message": "Invalid file type."}), 400
 
 @app.route('/tinted_images/<filename>', methods=['GET'])
 def serve_tinted_image(filename):
-    return send_from_directory(app.config['TINTED_FOLDER'], filename)
+    """Serve tinted images from the tinted folder."""
+    try:
+        return send_from_directory(app.config['TINTED_FOLDER'], filename)
+    except FileNotFoundError:
+        return jsonify({"success": False, "message": "File not found."}), 404
 
 if __name__ == "__main__":
     app.run(debug=True)

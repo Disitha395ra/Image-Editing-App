@@ -1,10 +1,13 @@
 import React from "react";
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View, Image, Alert } from "react-native";
 import { PaperProvider, Text, IconButton, MD3Colors } from "react-native-paper";
 import axios from "axios";
 
 export default function Tint({ route }) {
   const { photo } = route.params;
+
+  // Replace with your computer's IP address
+  const BACKEND_URL = "http://192.168.1.10";
 
   const applyTint = async (tintType) => {
     try {
@@ -16,22 +19,31 @@ export default function Tint({ route }) {
       });
       formData.append("tint", tintType);
 
-      const response = await axios.post("http://127.0.0.1:5000", formData, {
+      const response = await axios.post(`${BACKEND_URL}/apply-tint`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
       if (response.data.success) {
-        const tintedImageUrl = response.data.tintedImageUrl; // Backend returns the tinted image URL
-        alert(`${tintType} Tint Applied!`);
+        const tintedImageUrl = `${BACKEND_URL}${response.data.tintedImageUrl}`;
+        Alert.alert(
+          `${tintType} Tint Applied!`,
+          `Tinted Image URL: ${tintedImageUrl}`
+        );
         console.log("Tinted Image URL:", tintedImageUrl);
       } else {
-        alert("Failed to apply tint.");
+        Alert.alert(
+          "Failed to Apply Tint",
+          response.data.message || "An unknown error occurred."
+        );
       }
     } catch (error) {
       console.error("Error applying tint:", error);
-      alert("Error applying tint.");
+      Alert.alert(
+        "Error",
+        "Unable to connect to the backend. Please check your connection and backend configuration."
+      );
     }
   };
 
@@ -49,51 +61,51 @@ export default function Tint({ route }) {
         ) : (
           <Text>No photo provided</Text>
         )}
-        <View style={{ flexDirection: "row", marginTop: 50 }}>
-          <View style={styles.buttoncomponent}>
+        <View style={styles.buttonRow}>
+          <View style={styles.buttonComponent}>
             <IconButton
               icon="camera"
               iconColor={MD3Colors.error50}
-              size={20}
+              size={30}
               onPress={handlered}
             />
-            <Text style={styles.buttontext}>Red Tint</Text>
+            <Text style={styles.buttonText}>Red</Text>
           </View>
-          <View style={styles.buttoncomponent}>
+          <View style={styles.buttonComponent}>
             <IconButton
               icon="camera"
-              iconColor={MD3Colors.error50}
-              size={20}
+              iconColor={MD3Colors.success50}
+              size={30}
               onPress={handlegreen}
             />
-            <Text style={styles.buttontext}>Green Tint</Text>
+            <Text style={styles.buttonText}>Green</Text>
           </View>
-          <View style={styles.buttoncomponent}>
+          <View style={styles.buttonComponent}>
             <IconButton
               icon="camera"
-              iconColor={MD3Colors.error50}
-              size={20}
+              iconColor={MD3Colors.primary50}
+              size={30}
               onPress={handleblue}
             />
-            <Text style={styles.buttontext}>Blue Tint</Text>
+            <Text style={styles.buttonText}>Blue</Text>
           </View>
-          <View style={styles.buttoncomponent}>
+          <View style={styles.buttonComponent}>
             <IconButton
               icon="camera"
-              iconColor={MD3Colors.error50}
-              size={20}
+              iconColor={MD3Colors.warning50}
+              size={30}
               onPress={handleyellow}
             />
-            <Text style={styles.buttontext}>Yellow Tint</Text>
+            <Text style={styles.buttonText}>Yellow</Text>
           </View>
-          <View style={styles.buttoncomponent}>
+          <View style={styles.buttonComponent}>
             <IconButton
               icon="camera"
-              iconColor={MD3Colors.error50}
-              size={20}
+              iconColor={MD3Colors.neutral50}
+              size={30}
               onPress={handlegray}
             />
-            <Text style={styles.buttontext}>Gray Tint</Text>
+            <Text style={styles.buttonText}>Gray</Text>
           </View>
         </View>
       </View>
@@ -108,24 +120,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
   },
-  title: {
-    marginBottom: 20,
-    fontSize: 20,
-  },
   image: {
     width: 300,
     height: 300,
     borderRadius: 10,
   },
-  buttontext: {
-    textAlign: "center",
-    fontSize: 8,
-    marginTop: 5,
-    color: "black",
+  buttonRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginTop: 20,
+    justifyContent: "center",
   },
-  buttoncomponent: {
-    margin: 10,
+  buttonComponent: {
     alignItems: "center",
-    borderBlockColor: "black",
+    margin: 10,
+  },
+  buttonText: {
+    textAlign: "center",
+    fontSize: 12,
+    marginTop: 5,
   },
 });
