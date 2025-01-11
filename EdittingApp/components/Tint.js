@@ -6,7 +6,6 @@ import axios from "axios";
 export default function Tint({ route }) {
   const { photo } = route.params;
 
-  // Replace with your computer's IP address
   const BACKEND_URL = "http://192.168.1.10";
 
   const applyTint = async (tintType) => {
