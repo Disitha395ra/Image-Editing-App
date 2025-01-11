@@ -8,6 +8,11 @@ const UploadPhotobutton =()=>{
 const cancelbutton =()=>{
 
 }
+
+const editbutton =()=>{
+
+}
+
 export default function UploadPhoto() {
   return (
     <View style={styles.container}>
@@ -19,11 +24,15 @@ export default function UploadPhoto() {
             </Card.Content>
             <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
             <Card.Actions>
-              <Button icon="camera" mode="outlined" onPress={cancelbutton}>
+              <Button
+                icon="block-helper"
+                mode="outlined"
+                onPress={cancelbutton}
+              >
                 Cancel
               </Button>
               <Button
-                icon="camera"
+                icon="arrow-down-bold-circle"
                 mode="contained"
                 onPress={UploadPhotobutton}
               >
@@ -31,6 +40,14 @@ export default function UploadPhoto() {
               </Button>
             </Card.Actions>
           </Card>
+          <Button
+            icon="auto-fix"
+            mode="contained"
+            onPress={editbutton}
+            style={styles.editbutton}
+          >
+            Edit The Photo
+          </Button>
         </ScrollView>
       </PaperProvider>
     </View>
@@ -45,10 +62,14 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
     alignContent: "center",
   },
-  card:{
+  card: {
     alignContent: "center",
     justifyContent: "center",
     margin: 0,
-    marginTop: 240
+    marginTop: 240,
+  },
+  editbutton:{
+    margin: 30,
+    backgroundColor:"green"
   }
 });
