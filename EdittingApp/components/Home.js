@@ -8,18 +8,20 @@ const Stack = createStackNavigator();
     return (
       <PaperProvider>
         <ScrollView>
-          <Image
-            source={require("../assets/banner.jpg")}
-            style={styles.banner}
-          />
-          <Button
-            icon="airballoon-outline"
-            mode="contained"
-            onPress={() => navigation.navigate("UploadPhoto")}
-            style={styles.homebutton}
-          >
-            Start Here
-          </Button>
+          <NavigationContainer>
+            <Image
+              source={require("../assets/banner.jpg")}
+              style={styles.banner}
+            />
+            <Button
+              icon="airballoon-outline"
+              mode="contained"
+              onPress={() => navigation.navigate("UploadPhoto")}
+              style={styles.homebutton}
+            >
+              Start Here
+            </Button>
+          </NavigationContainer>
         </ScrollView>
       </PaperProvider>
     );
