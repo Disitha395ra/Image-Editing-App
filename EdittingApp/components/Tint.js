@@ -6,7 +6,7 @@ import axios from "axios";
 export default function Tint({ route }) {
   const { photo } = route.params;
 
-  const BACKEND_URL = "http://192.168.1.10";
+  const BACKEND_URL = "http://127.0.0.1:5000";
 
   const applyTint = async (tintType) => {
     try {
