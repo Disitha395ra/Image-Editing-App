@@ -1,24 +1,38 @@
 import { StyleSheet, ScrollView, View } from "react-native";
-import { PaperProvider, Text, Avatar, Button, Card } from "react-native-paper";
+import { PaperProvider, Text, Button, Card } from "react-native-paper";
 import React, { useState } from "react";
+import { launchImageLibrary } from "react-native-image-picker";
 
 
-const UploadPhotobutton =()=>{
+export default function UploadPhoto({ navigation }) {
+  const [photo, setPhoto] = useState(null); 
 
-}
+  const uploadPhotoButton = () => {
+    const options = {
+      mediaType: "photo",
+      quality: 1,
+    };
+    launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        alert("You Cancelled Image Picker");
+      } else if (response.errorMessage) {
+        alert("An Error Occurred: " + response.errorMessage);
+      } else {
+        const selectedPhoto = response.assets[0].uri;
+        setPhoto(selectedPhoto); 
+      }
+    });
+  };
 
-const cancelbutton =()=>{
+  const cancelButton = () => {
+    navigation.navigate("Home");
+  };
 
-}
+  const editButton = () => {
+    navigation.navigate("ButtonPannel", { photo });
+  };
 
-const editbutton =()=>{
-
-}
-
-export default function UploadPhoto() {
-  const [photo, setphoto] = useState(null);
   return (
-    
     <View style={styles.container}>
       <PaperProvider>
         <ScrollView>
@@ -26,28 +40,32 @@ export default function UploadPhoto() {
             <Card.Content>
               <Text variant="titleLarge">Upload Photo</Text>
             </Card.Content>
-            <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
+            {photo ? (
+              <Card.Cover source={{ uri: photo }} />
+            ) : (
+              <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
+            )}
             <Card.Actions>
               <Button
                 icon="block-helper"
                 mode="outlined"
-                onPress={cancelbutton}
+                onPress={cancelButton}
               >
                 Cancel
               </Button>
               <Button
                 icon="arrow-down-bold-circle"
                 mode="contained"
-                onPress={UploadPhotobutton}
+                onPress={uploadPhotoButton}
               >
-                UploadPhoto
+                Upload Photo
               </Button>
             </Card.Actions>
           </Card>
           <Button
             icon="auto-fix"
             mode="contained"
-            onPress={editbutton}
+            onPress={editButton}
             style={styles.editbutton}
           >
             Edit The Photo
@@ -72,8 +90,8 @@ const styles = StyleSheet.create({
     margin: 0,
     marginTop: 240,
   },
-  editbutton:{
+  editbutton: {
     margin: 30,
-    backgroundColor:"green"
-  }
+    backgroundColor: "green",
+  },
 });
