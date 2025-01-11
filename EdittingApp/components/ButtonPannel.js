@@ -1,8 +1,8 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Tint} from './Tint'
-import {Adjust} from './Adjust'
-import {Download} from './Download'
+import Tint from './Tint'
+import Adjust from './Adjust'
+import Download from './Download'
 
 const Tab = createBottomTabNavigator();
 
