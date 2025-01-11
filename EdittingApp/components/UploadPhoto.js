@@ -1,5 +1,7 @@
 import { StyleSheet, ScrollView, View } from "react-native";
 import { PaperProvider, Text, Avatar, Button, Card } from "react-native-paper";
+import React, { useState } from "react";
+
 
 const UploadPhotobutton =()=>{
 
@@ -14,7 +16,9 @@ const editbutton =()=>{
 }
 
 export default function UploadPhoto() {
+  const [photo, setphoto] = useState(null);
   return (
+    
     <View style={styles.container}>
       <PaperProvider>
         <ScrollView>
