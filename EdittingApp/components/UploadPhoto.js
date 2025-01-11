@@ -18,5 +18,7 @@ export default function UploadPhoto() {
 }
 
 const styles = StyleSheet.create({
-  
+  container:{
+    backgroundColor: "black",
+  }
 });

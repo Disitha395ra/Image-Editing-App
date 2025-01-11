@@ -1,14 +1,11 @@
 import {StyleSheet, ScrollView,Image} from 'react-native'
 import { PaperProvider, Text, Button } from "react-native-paper";
-import {createStackNavigator} from '@react-navigation/stack'
-import { NavigationContainer } from '@react-navigation/native';
 
 export default function Home({navigation}){
-const Stack = createStackNavigator();
+
     return (
       <PaperProvider>
         <ScrollView>
-          <NavigationContainer>
             <Image
               source={require("../assets/banner.jpg")}
               style={styles.banner}
@@ -21,7 +18,6 @@ const Stack = createStackNavigator();
             >
               Start Here
             </Button>
-          </NavigationContainer>
         </ScrollView>
       </PaperProvider>
     );
