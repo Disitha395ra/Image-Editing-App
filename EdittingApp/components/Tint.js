@@ -16,15 +16,11 @@ export default function Tint({ route }) {
       });
       formData.append("tint", tintType);
 
-      const response = await axios.post(
-        "http://your-backend-url/apply-tint",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post("http://127.0.0.1:5000", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.data.success) {
         const tintedImageUrl = response.data.tintedImageUrl; // Backend returns the tinted image URL
