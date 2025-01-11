@@ -3,8 +3,22 @@ import { StyleSheet, View, Image } from "react-native";
 import { PaperProvider, Text, IconButton, MD3Colors } from "react-native-paper";
 
 export default function Tint({ route }) {
-  const { photo } = route.params || {};
-
+    const { photo } = route.params;
+    const handlered = () => {
+        alert("Red Tint");
+    }
+    const handlegreen = () => {
+        alert("Green Tint");
+    }
+    const handleblue = () => {
+        alert("Blue Tint");
+    }
+    const handleyellow = () => {
+        alert("Yellow Tint");
+    }
+    const handlegray = () => {
+        alert("Gray Tint");
+    }
   return (
     <PaperProvider>
       <View style={styles.container}>
@@ -19,7 +33,7 @@ export default function Tint({ route }) {
               icon="camera"
               iconColor={MD3Colors.error50}
               size={20}
-              onPress={() => console.log("Pressed")}
+              onPress={handlered}
             />
             <Text style={styles.buttontext}>Red Tint</Text>
           </View>
@@ -28,7 +42,7 @@ export default function Tint({ route }) {
               icon="camera"
               iconColor={MD3Colors.error50}
               size={20}
-              onPress={() => console.log("Pressed")}
+              onPress={handlegreen}
             />
             <Text style={styles.buttontext}>Green Tint</Text>
           </View>
@@ -37,7 +51,7 @@ export default function Tint({ route }) {
               icon="camera"
               iconColor={MD3Colors.error50}
               size={20}
-              onPress={() => console.log("Pressed")}
+              onPress={handleblue}
             />
             <Text style={styles.buttontext}>Blue Tint</Text>
           </View>
@@ -46,7 +60,7 @@ export default function Tint({ route }) {
               icon="camera"
               iconColor={MD3Colors.error50}
               size={20}
-              onPress={() => console.log("Pressed")}
+              onPress={handleyellow}
             />
             <Text style={styles.buttontext}>Yellow Tint</Text>
           </View>
@@ -55,7 +69,7 @@ export default function Tint({ route }) {
               icon="camera"
               iconColor={MD3Colors.error50}
               size={20}
-              onPress={() => console.log("Pressed")}
+              onPress={handlegray}
             />
             <Text style={styles.buttontext}>Gray Tint</Text>
           </View>
